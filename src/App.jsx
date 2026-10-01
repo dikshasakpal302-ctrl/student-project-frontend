@@ -1,27 +1,187 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Sidebar from './components/Sidebar'
-import PagePlaceholder from './components/PagePlaceholder'
-import Projects from './pages/Projects'
+import { useState } from "react";
 
-function App() {
+const COLUMNS = [
+  { key: "todo", label: "To Do" },
+  { key: "in_progress", label: "In Progress" },
+  { key: "blocked", label: "Blocked" },
+  { key: "done", label: "Done" },
+];
+
+const priorityStyle = {
+  low: "bg-green-200 text-green-800",
+  medium: "bg-yellow-200 text-yellow-800",
+  high: "bg-red-200 text-red-800",
+};
+
+const initialTasks = [
+  { id: 1, title: "Design login screen", assignee: "Diksha", priority: "high", deadline: "2026-10-05", status: "todo" },
+  { id: 2, title: "Set up database", assignee: "Member 2", priority: "medium", deadline: "2026-10-08", status: "in_progress" },
+  { id: 3, title: "Train risk model", assignee: "Member 3", priority: "high", deadline: "2026-10-12", status: "blocked" },
+  { id: 4, title: "Create project form", assignee: "Diksha", priority: "low", deadline: "2026-10-01", status: "done" },
+];
+
+const emptyForm = {
+  title: "",
+  assignee: "",
+  priority: "medium",
+  deadline: "",
+  status: "todo",
+};
+
+const inputClass =
+  "w-full rounded bg-slate-700 border border-slate-600 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-blue-500";
+
+export default function TaskBoard() {
+  const [tasks, setTasks] = useState(initialTasks);
+  const [form, setForm] = useState(emptyForm);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return;
+    const newTask = { ...form, title: form.title.trim(), id: Date.now() };
+    setTasks([...tasks, newTask]);
+    setForm(emptyForm);
+  };
+
+  // direction: -1 = move left, +1 = move right
+  const moveTask = (id, direction) => {
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (task.id !== id) return task;
+        const index = COLUMNS.findIndex((c) => c.key === task.status);
+        const next = COLUMNS[index + direction];
+        return next ? { ...task, status: next.key } : task;
+      })
+    );
+  };
+
+  const deleteTask = (id) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
+
   return (
-    <BrowserRouter>
-      <div className="flex min-h-screen bg-slate-900 text-white">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <Routes>
-            <Route path="/" element={<PagePlaceholder title="Dashboard" />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/tasks" element={<PagePlaceholder title="Tasks" />} />
-            <Route path="/team" element={<PagePlaceholder title="Team" />} />
-            <Route path="/mentor" element={<PagePlaceholder title="Mentor Portal" />} />
-            <Route path="/documents" element={<PagePlaceholder title="Documents" />} />
-            <Route path="/reports" element={<PagePlaceholder title="Reports" />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
-  )
-}
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Task Board</h1>
 
-export default App
+      {/* Create Task form */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-slate-800 rounded-lg p-4 mb-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-3"
+      >
+        <input
+          name="title"
+          value={form.title}
+          onChange={handleChange}
+          placeholder="Task title"
+          required
+          className={`${inputClass} xl:col-span-2`}
+        />
+        <input
+          name="assignee"
+          value={form.assignee}
+          onChange={handleChange}
+          placeholder="Assignee"
+          className={inputClass}
+        />
+        <select
+          name="priority"
+          value={form.priority}
+          onChange={handleChange}
+          className={inputClass}
+        >
+          <option value="low">Low priority</option>
+          <option value="medium">Medium priority</option>
+          <option value="high">High priority</option>
+        </select>
+        <input
+          type="date"
+          name="deadline"
+          value={form.deadline}
+          onChange={handleChange}
+          className={inputClass}
+        />
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          className={inputClass}
+        >
+          {COLUMNS.map((c) => (
+            <option key={c.key} value={c.key}>
+              {c.label}
+            </option>
+          ))}
+        </select>
+        <button
+          type="submit"
+          className="md:col-span-2 xl:col-span-6 rounded bg-blue-600 hover:bg-blue-500 px-4 py-2 font-medium"
+        >
+          + Create Task
+        </button>
+      </form>
+
+      {/* Board */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        {COLUMNS.map((column) => {
+          const columnTasks = tasks.filter((t) => t.status === column.key);
+          return (
+            <div key={column.key} className="bg-slate-800 rounded-lg p-3">
+              <h2 className="font-semibold mb-3">
+                {column.label}{" "}
+                <span className="text-sm text-slate-300">({columnTasks.length})</span>
+              </h2>
+
+              <div className="space-y-3">
+                {columnTasks.map((task) => (
+                  <div key={task.id} className="bg-slate-700 rounded-md shadow p-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="font-medium">{task.title}</p>
+                      <button
+                        onClick={() => deleteTask(task.id)}
+                        title="Delete task"
+                        className="text-slate-400 hover:text-red-400 text-sm"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <p className="text-sm text-slate-300">
+                      {task.assignee || "Unassigned"}
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className={`text-xs px-2 py-1 rounded ${priorityStyle[task.priority]}`}>
+                        {task.priority}
+                      </span>
+                      <span className="text-xs text-slate-300">
+                        {task.deadline ? `Due ${task.deadline}` : "No deadline"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between mt-3">
+                      <button
+                        onClick={() => moveTask(task.id, -1)}
+                        disabled={column.key === "todo"}
+                        className="text-sm px-2 py-1 rounded bg-slate-600 disabled:opacity-40"
+                      >
+                        ← Back
+                      </button>
+                      <button
+                        onClick={() => moveTask(task.id, 1)}
+                        disabled={column.key === "done"}
+                        className="text-sm px-2 py-1 rounded bg-blue-600 text-white disabled:opacity-40"
+                      >
+                        Next →
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

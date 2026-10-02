@@ -17,14 +17,37 @@ const initialDocuments = [
   },
 ];
 
+const initialFeedback = [
+  {
+    id: 1,
+    projectId: 1,
+    mentor: "Mentor",
+    comment: "Good idea. Add more detail to the risk prediction goals.",
+    status: "needs_changes",
+    date: "2026-09-28",
+  },
+];
+
 const AppDataContext = createContext(null);
 
 export function AppDataProvider({ children }) {
   const [members, setMembers] = useState(initialMembers);
   const [documents, setDocuments] = useState(initialDocuments);
+  const [feedback, setFeedback] = useState(initialFeedback);
+  const [reviewRequests, setReviewRequests] = useState({});
+
   return (
     <AppDataContext.Provider
-      value={{ members, setMembers, documents, setDocuments }}
+      value={{
+        members,
+        setMembers,
+        documents,
+        setDocuments,
+        feedback,
+        setFeedback,
+        reviewRequests,
+        setReviewRequests,
+      }}
     >
       {children}
     </AppDataContext.Provider>

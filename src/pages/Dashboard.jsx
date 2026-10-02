@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTasks } from "../context/TasksContext";
+import { useProjects } from "../context/ProjectsContext";
 
 const STATUS_INFO = [
   { key: "todo", label: "To Do", bar: "bg-slate-400" },
@@ -39,6 +40,7 @@ function AiPlaceholder({ title, text }) {
 
 export default function Dashboard() {
   const { tasks } = useTasks();
+  const { projects } = useProjects();
 
   const today = new Date().toISOString().slice(0, 10);
   const total = tasks.length;
@@ -59,20 +61,26 @@ export default function Dashboard() {
     <div>
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      {/* Summary numbers */}
+      <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 mb-6">
+        <StatCard label="Projects" value={projects.length} color="text-blue-400" />
         <StatCard label="Total tasks" value={total} />
         <StatCard label="Completed" value={done} color="text-green-400" />
         <StatCard label="Blocked" value={count("blocked")} color="text-red-400" />
         <StatCard label="Overdue" value={overdue} color="text-yellow-400" />
       </div>
 
+      {/* Progress + status breakdown */}
       <div className="bg-slate-800 rounded-lg p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
           <h2 className="font-semibold">Overall progress</h2>
           <span className="text-sm text-slate-300">{progress}% done</span>
         </div>
         <div className="w-full h-3 bg-slate-700 rounded-full overflow-hidden mb-4">
-          <div className="h-full bg-green-500 transition-all" style={{ width: `${progress}%` }} />
+          <div
+            className="h-full bg-green-500 transition-all"
+            style={{ width: `${progress}%` }}
+          />
         </div>
 
         <div className="space-y-2">
@@ -93,6 +101,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+        {/* Upcoming deadlines */}
         <div className="bg-slate-800 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-semibold">Upcoming deadlines</h2>
@@ -129,6 +138,7 @@ export default function Dashboard() {
           )}
         </div>
 
+        {/* AI space for Member 3 */}
         <div className="space-y-4">
           <AiPlaceholder
             title="Project Health Score"

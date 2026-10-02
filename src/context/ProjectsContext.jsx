@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import usePersistentState from "../hooks/usePersistentState";
 
 const initialProjects = [
   {
@@ -16,7 +17,7 @@ const initialProjects = [
 const ProjectsContext = createContext(null);
 
 export function ProjectsProvider({ children }) {
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = usePersistentState("spm_projects", initialProjects);
   return (
     <ProjectsContext.Provider value={{ projects, setProjects }}>
       {children}

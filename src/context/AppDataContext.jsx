@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import usePersistentState from "../hooks/usePersistentState";
 
 const initialMembers = [
   { id: 1, name: "Diksha", role: "Frontend & Design", email: "" },
@@ -31,10 +32,10 @@ const initialFeedback = [
 const AppDataContext = createContext(null);
 
 export function AppDataProvider({ children }) {
-  const [members, setMembers] = useState(initialMembers);
-  const [documents, setDocuments] = useState(initialDocuments);
-  const [feedback, setFeedback] = useState(initialFeedback);
-  const [reviewRequests, setReviewRequests] = useState({});
+  const [members, setMembers] = usePersistentState("spm_members", initialMembers);
+  const [documents, setDocuments] = usePersistentState("spm_documents", initialDocuments);
+  const [feedback, setFeedback] = usePersistentState("spm_feedback", initialFeedback);
+  const [reviewRequests, setReviewRequests] = usePersistentState("spm_reviews", {});
 
   return (
     <AppDataContext.Provider

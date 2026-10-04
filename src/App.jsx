@@ -9,6 +9,7 @@ import TaskBoard from './pages/TaskBoard'
 import TaskViews from './pages/TaskViews'
 import Milestones from './pages/Milestones'
 import Workload from './pages/Workload'
+import AIInsights from './pages/AIInsights'
 import Dashboard from './pages/Dashboard'
 import Team from './pages/Team'
 import Documents from './pages/Documents'
@@ -36,6 +37,7 @@ function App() {
                   <Route element={<ProtectedRoute />}>
                     <Route element={<AppLayout />}>
                       <Route path="/" element={<Dashboard />} />
+                      <Route path="/ai" element={<AIInsights />} />
                       <Route path="/projects" element={<Projects />} />
                       <Route path="/tasks" element={<TaskBoard />} />
                       <Route path="/task-views" element={<TaskViews />} />

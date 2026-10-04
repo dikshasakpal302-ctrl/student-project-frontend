@@ -10,6 +10,7 @@ const links = [
   { to: '/workload', label: 'Workload' },
   { to: '/team', label: 'Team' },
   { to: '/mentor', label: 'Mentor' },
+  { to: '/knowledge', label: 'Knowledge Base' },
   { to: '/documents', label: 'Documents' },
   { to: '/reports', label: 'Reports' },
 ]

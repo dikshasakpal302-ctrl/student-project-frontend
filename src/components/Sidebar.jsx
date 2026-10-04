@@ -11,6 +11,7 @@ const links = [
   { to: '/team', label: 'Team' },
   { to: '/mentor', label: 'Mentor' },
   { to: '/knowledge', label: 'Knowledge Base' },
+  { to: '/submissions', label: 'Submissions' },
   { to: '/documents', label: 'Documents' },
   { to: '/reports', label: 'Reports' },
 ]

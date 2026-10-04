@@ -12,6 +12,7 @@ import Workload from './pages/Workload'
 import AIInsights from './pages/AIInsights'
 import KnowledgeBase from './pages/KnowledgeBase'
 import Submissions from './pages/Submissions'
+import Viva from './pages/Viva'
 import Dashboard from './pages/Dashboard'
 import Team from './pages/Team'
 import Documents from './pages/Documents'
@@ -53,6 +54,7 @@ function App() {
                           <Route path="/mentor" element={<Mentor />} />
                           <Route path="/knowledge" element={<KnowledgeBase />} />
                           <Route path="/submissions" element={<Submissions />} />
+                          <Route path="/viva" element={<Viva />} />
                           <Route path="/documents" element={<Documents />} />
                           <Route path="/reports" element={<Reports />} />
                         </Route>

@@ -12,6 +12,7 @@ const links = [
   { to: '/mentor', label: 'Mentor' },
   { to: '/knowledge', label: 'Knowledge Base' },
   { to: '/submissions', label: 'Submissions' },
+  { to: '/viva', label: 'Viva Prep' },
   { to: '/documents', label: 'Documents' },
   { to: '/reports', label: 'Reports' },
 ]

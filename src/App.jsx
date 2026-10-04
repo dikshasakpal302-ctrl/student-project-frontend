@@ -6,7 +6,9 @@ import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
 import Projects from './pages/Projects'
 import TaskBoard from './pages/TaskBoard'
+import TaskViews from './pages/TaskViews'
 import Milestones from './pages/Milestones'
+import Workload from './pages/Workload'
 import Dashboard from './pages/Dashboard'
 import Team from './pages/Team'
 import Documents from './pages/Documents'
@@ -36,7 +38,9 @@ function App() {
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/projects" element={<Projects />} />
                       <Route path="/tasks" element={<TaskBoard />} />
+                      <Route path="/task-views" element={<TaskViews />} />
                       <Route path="/milestones" element={<Milestones />} />
+                      <Route path="/workload" element={<Workload />} />
                       <Route path="/team" element={<Team />} />
                       <Route path="/mentor" element={<Mentor />} />
                       <Route path="/documents" element={<Documents />} />

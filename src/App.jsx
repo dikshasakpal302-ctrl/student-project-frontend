@@ -6,6 +6,7 @@ import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
 import Projects from './pages/Projects'
 import TaskBoard from './pages/TaskBoard'
+import Milestones from './pages/Milestones'
 import Dashboard from './pages/Dashboard'
 import Team from './pages/Team'
 import Documents from './pages/Documents'
@@ -15,35 +16,37 @@ import { AuthProvider } from './context/AuthContext'
 import { TasksProvider } from './context/TasksContext'
 import { ProjectsProvider } from './context/ProjectsContext'
 import { AppDataProvider } from './context/AppDataContext'
+import { MilestonesProvider } from './context/MilestonesContext'
 
 function App() {
   return (
     <AuthProvider>
       <AppDataProvider>
         <ProjectsProvider>
-          <TasksProvider>
-            <BrowserRouter>
-              <Routes>
-                {/* Public pages */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+          <MilestonesProvider>
+            <TasksProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                {/* Pages that need login */}
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<AppLayout />}>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/projects" element={<Projects />} />
-                    <Route path="/tasks" element={<TaskBoard />} />
-                    <Route path="/team" element={<Team />} />
-                    <Route path="/mentor" element={<Mentor />} />
-                    <Route path="/documents" element={<Documents />} />
-                    <Route path="/reports" element={<Reports />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<AppLayout />}>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/projects" element={<Projects />} />
+                      <Route path="/tasks" element={<TaskBoard />} />
+                      <Route path="/milestones" element={<Milestones />} />
+                      <Route path="/team" element={<Team />} />
+                      <Route path="/mentor" element={<Mentor />} />
+                      <Route path="/documents" element={<Documents />} />
+                      <Route path="/reports" element={<Reports />} />
+                    </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </TasksProvider>
+                </Routes>
+              </BrowserRouter>
+            </TasksProvider>
+          </MilestonesProvider>
         </ProjectsProvider>
       </AppDataProvider>
     </AuthProvider>
